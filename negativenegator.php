@@ -3,6 +3,100 @@
 require_once 'negativenegator.civix.php';
 use CRM_Negativenegator_ExtensionUtil as E;
 
+define('CAN_ENTER_NEGATIVE', 'enter negative values in price fields');
+
+/**
+ * place info on price fields in a static
+ * global so we only have to look things
+ * up once.
+ */
+static $noNegative;
+
+/**
+ * Implements hook_civicrm_buildForm()
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_buildForm/
+ *
+ * @param string $formName
+ * @param object $form
+ * @return void
+ */
+function negativenegator_civicrm_buildForm($formName, &$form) {
+  global $noNegative;
+
+  // bail immediately if user has permission to enter negative values
+  if (CRM_Core_Permission::check(CAN_ENTER_NEGATIVE)) {
+    return;
+  }
+
+  if (is_null($noNegative)) {
+
+    $noNegative = array();
+
+    foreach ($form->_elements as $el) {
+      $name = $el->_attributes['name'];
+      if (substr($name, 0, 6) == 'price_') {
+        try {
+          $info = civicrm_api3('PriceField', 'getsingle', array(
+            'id' => substr($name, 6),
+            'return' => 'html_type,label',
+          ));
+          if ($info['html_type'] == 'Text') {
+            $form->updateElementAttr($name, array(
+              'class' => $el->_attributes['class'] . ' no-negative',
+              'data-no-negative' => $info['label'],
+            ));
+            $noNegative[$name] = $info;
+          }
+        }
+        catch (CiviCRM_API3_Exception $e) {
+        }
+      }
+    }
+    if (!empty($noNegative)) {
+      $form->addFormRule('negativenegator_validate');
+      CRM_Core_Resources::singleton()->addScriptFile('com.ginkgostreet.negativenegator', 'js/negativenegator.js');
+    }
+  }
+}
+
+/**
+ * form rule: validate that price fields are non-negative
+ *
+ * @param array $values
+ * @return bool|array
+ */
+function negativenegator_validate($values) {
+  global $noNegative;
+
+  if (empty($noNegative)) {
+    return TRUE;
+  }
+
+  $errors = array();
+  foreach ($noNegative as $name => $info) {
+    if ($values[$name] < 0) {
+      $errors[$name] = "{$info['label']} cannot be negative.";
+    }
+  }
+  return empty($errors) ? TRUE : $errors;
+}
+
+/**
+ * Implements hook_civicrm_permission()
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_permission/
+ *
+ * @param array $permissions
+ * @return void
+ */
+function negativenegator_civicrm_permission(&$permissions) {
+  $permissions[CAN_ENTER_NEGATIVE] = array(
+    'CiviContribute: ' . CAN_ENTER_NEGATIVE,
+    'Allow negative values to be entered for price fields of type "Text / Numeric Quantity"',
+  );
+}
+
 /**
  * Implements hook_civicrm_config().
  *
