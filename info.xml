@@ -1,26 +1,28 @@
 <?xml version="1.0"?>
 <extension key="com.ginkgostreet.negativenegator" type="module">
   <file>negativenegator</file>
-  <name>FIXME</name>
-  <description>FIXME</description>
+  <name>Negative Negator</name>
+  <description>A CiviCRM extension that provides form validation to prevent negative values from being entered in Text / Numeric Quantity fields in Price Sets.</description>
   <license>AGPL-3.0</license>
   <maintainer>
-    <author>David Reedy Jr</author>
-    <email>davidrjr.konadave@gmail.com</email>
+    <author>Ginkgo Street Labs</author>
+    <email>support@ginkgostreet.com</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">http://FIXME</url>
-    <url desc="Documentation">http://FIXME</url>
-    <url desc="Support">http://FIXME</url>
+    <url desc="Main Extension Page">https://github.com/ginkgostreet/com.ginkgostreet.negativenegator</url>
+    <url desc="Documentation">https://github.com/ginkgostreet/com.ginkgostreet.negativenegator</url>
+    <url desc="Support">https://github.com/ginkgostreet/com.ginkgostreet.negativenegator/issues</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
-  <releaseDate>2018-11-14</releaseDate>
+  <releaseDate>2018-11-19</releaseDate>
   <version>1.0</version>
-  <develStage>alpha</develStage>
+  <develStage>stable</develStage>
   <compatibility>
     <ver>4.7</ver>
   </compatibility>
-  <comments>This is a new, undeveloped module</comments>
+  <comments>
+    Developed by Ginkgo Street Labs with conceptual direction and funding provided by the National Museum of Mathematics.
+  </comments>
   <civix>
     <namespace>CRM/Negativenegator</namespace>
   </civix>
