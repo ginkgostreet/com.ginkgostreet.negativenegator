@@ -6,11 +6,10 @@ use CRM_Negativenegator_ExtensionUtil as E;
 define('CAN_ENTER_NEGATIVE', 'enter negative values in price fields');
 
 /**
- * place info on price fields in a static
- * global so we only have to look things
- * up once.
+ * place info on price fields in a global so we
+ * only have to look things up once.
  */
-static $noNegative;
+global $noNegative;
 
 /**
  * Implements hook_civicrm_buildForm()
