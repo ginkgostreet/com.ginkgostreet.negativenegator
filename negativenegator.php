@@ -74,7 +74,7 @@ function negativenegator_validate($values) {
 
   $errors = array();
   foreach ($noNegative as $name => $info) {
-    if ($values[$name] < 0) {
+    if (!empty($values[$name]) && $values[$name] < 0) {
       $errors[$name] = "{$info['label']} cannot be negative.";
     }
   }
