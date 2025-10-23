@@ -48,7 +48,7 @@ function negativenegator_civicrm_buildForm($formName, &$form) {
             $noNegative[$name] = $info;
           }
         }
-        catch (CiviCRM_API3_Exception $e) {
+        catch (CRM_Core_Exception $e) {
         }
       }
     }
