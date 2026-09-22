@@ -30,21 +30,21 @@ function negativenegator_civicrm_buildForm($formName, &$form) {
 
   if (is_null($noNegative)) {
 
-    $noNegative = array();
+    $noNegative = [];
 
     foreach ($form->_elements as $el) {
       $name = $el->_attributes['name'];
       if (substr($name, 0, 6) == 'price_') {
         try {
-          $info = civicrm_api3('PriceField', 'getsingle', array(
+          $info = civicrm_api3('PriceField', 'getsingle', [
             'id' => substr($name, 6),
             'return' => 'html_type,label',
-          ));
+          ]);
           if ($info['html_type'] == 'Text') {
-            $form->updateElementAttr($name, array(
+            $form->updateElementAttr($name, [
               'class' => $el->_attributes['class'] . ' no-negative',
               'data-no-negative' => $info['label'],
-            ));
+            ]);
             $noNegative[$name] = $info;
           }
         }
@@ -72,7 +72,7 @@ function negativenegator_validate($values) {
     return TRUE;
   }
 
-  $errors = array();
+  $errors = [];
   foreach ($noNegative as $name => $info) {
     if (!empty($values[$name]) && $values[$name] < 0) {
       $errors[$name] = "{$info['label']} cannot be negative.";
@@ -90,10 +90,10 @@ function negativenegator_validate($values) {
  * @return void
  */
 function negativenegator_civicrm_permission(&$permissions) {
-  $permissions[CAN_ENTER_NEGATIVE] = array(
+  $permissions[CAN_ENTER_NEGATIVE] = [
     'CiviContribute: ' . CAN_ENTER_NEGATIVE,
     'Allow negative values to be entered for price fields of type "Text / Numeric Quantity"',
-  );
+  ];
 }
 
 /**
