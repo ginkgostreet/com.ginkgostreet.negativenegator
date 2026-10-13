@@ -25,5 +25,12 @@
   </comments>
   <civix>
     <namespace>CRM/Negativenegator</namespace>
+    <format>25.10.2</format>
   </civix>
+  <classloader>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
+  <mixins>
+    <mixin>scan-classes@1.0.0</mixin>
+  </mixins>
 </extension>
